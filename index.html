@@ -404,7 +404,7 @@
           <td>${row[5]}</td>
           <td>${row[6]}</td>
           <td class="status"><span class="badge ${days <= 0 ? 'pending' : 'active'}">${days <= 0 ? 'Pending' : 'Paid'}</span></td>
-  'Paid'td>${row[8]}</td>
+          <td>${row[8]}</td>
           <td>${row[9]}</td>
           <td class="access"><span class="badge active">${row[10]}</span></td>
           <td>${days}</td>
@@ -424,7 +424,7 @@
       });
 
       document.getElementById('totalSubscribers').textContent = subscribers.length;
-      document.getElementById('dueSoonCount').textContent = subscribers.filter(r => daysUntilDue(r[5]) <= 0).length;
+      document.getElementById('dueSoonCount').textContent = subscribers.filter(r => getOverdueLabel(daysUntilDue(r[5])) === 'DUE SOON').length;
       document.getElementById('monthlyExpected').textContent = '₱' + subscribers.reduce((sum, r) => sum + Number(r[6]), 0).toLocaleString();
       document.getElementById('activeAccess').textContent = subscribers.filter(r => r[10] === 'Active').length;
     }
@@ -473,7 +473,8 @@
       const headers = ['Subscriber ID','Name','Plan','Start Date','Billing Cycle','Next Payment Date','Amount Due','Payment Status','Last Payment Date','Payment Method','Server Access','Days Until Due','Overdue?'];
       const rows = subscribers.map(row => {
         const days = daysUntilDue(row[5]);
-        return [...row, days, getOverdueLabel(days)];
+        const paymentStatus = days <= 0 ? 'Pending' : 'Paid';
+        return [row[0], row[1], row[2], row[3], row[4], row[5], row[6], paymentStatus, row[8], row[9], row[10], days, getOverdueLabel(days)];
       });
       const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv' });
