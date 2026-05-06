@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jellyfin Advanced Tracker</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --header: #d8d800;
+      --grid: #b7b7b7;
+      --text: #111827;
+      --muted: #6b7280;
+      --due: #d8d800;
+      --ok: #e5e7eb;
+      --danger: #ef4444;
+      --active: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Calibri, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .app {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input, select, button {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    button {
+      cursor: pointer;
+      background: #111827;
+      color: #fff;
+      border-color: #111827;
+      font-weight: 600;
+    }
+
+    button.secondary {
+      background: #fff;
+      color: #111827;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      border: 1px solid #e5e7eb;
+    }
+
+    .card .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .card .value {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .table-wrap {
+      background: var(--card);
+      border-radius: 14px;
+      overflow: auto;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      border: 1px solid #e5e7eb;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1180px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--grid);
+      padding: 8px 10px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    th {
+      background: var(--header);
+      font-weight: 800;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    td.name {
+      text-align: left;
+    }
+
+    td.plan, td.status, td.access, td.overdue {
+      font-weight: 700;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 72px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .badge.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge.active {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .overdue-due {
+      background: var(--due);
+      font-weight: 800;
+    }
+
+    .overdue-ok {
+      background: #e5e7eb;
+      font-weight: 800;
+    }
+
+    .form-panel {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(140px, 1fr));
+      gap: 10px;
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      border: 1px solid #e5e7eb;
+    }
+
+    .form-panel button {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 14px;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-panel {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .form-panel button {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .summary, .form-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .form-panel button {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="topbar">
+      <div>
+        <h1>Jellyfin Advanced Tracker</h1>
+        <div class="subtitle">Subscriber billing and server access monitoring</div>
+      </div>
+      <div class="actions">
+        <input id="searchInput" type="search" placeholder="Search name or ID..." />
+        <select id="statusFilter">
+          <option value="all">All Status</option>
+          <option value="due">Due Soon</option>
+          <option value="ok">OK</option>
+        </select>
+        <button class="secondary" onclick="exportCSV()">Export CSV</button>
+      </div>
+    </section>
+
+    <section class="summary">
+      <div class="card">
+        <div class="label">Total Subscribers</div>
+        <div class="value" id="totalSubscribers">0</div>
+      </div>
+      <div class="card">
+        <div class="label">Due Soon</div>
+        <div class="value" id="dueSoonCount">0</div>
+      </div>
+      <div class="card">
+        <div class="label">Monthly Expected</div>
+        <div class="value" id="monthlyExpected">₱0</div>
+      </div>
+      <div class="card">
+        <div class="label">Active Access</div>
+        <div class="value" id="activeAccess">0</div>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Subscriber ID</th>
+            <th>Name</th>
+            <th>Plan</th>
+            <th>Start Date</th>
+            <th>Billing Cycle</th>
+            <th>Next Payment Date</th>
+            <th>Amount Due</th>
+            <th>Payment Status</th>
+            <th>Last Payment Date</th>
+            <th>Payment Method</th>
+            <th>Server Access</th>
+            <th>Days Until Due</th>
+            <th>Overdue?</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="subscriberTable"></tbody>
+      </table>
+    </section>
+
+    <section class="form-panel">
+      <input id="id" placeholder="Subscriber ID" />
+      <input id="name" placeholder="Name" />
+      <select id="plan">
+        <option>Basic</option>
+        <option>Standard</option>
+        <option>Premium</option>
+      </select>
+      <input id="amount" type="number" placeholder="Amount Due" />
+      <input id="nextDate" type="date" />
+      <select id="method">
+        <option>GCASH</option>
+        <option>BDO</option>
+        <option>MAYA</option>
+        <option>CASH</option>
+      </select>
+      <button onclick="addSubscriber()">Add Subscriber</button>
+      <button class="secondary" onclick="resetData()">Reset Sample Data</button>
+    </section>
+  </main>
+
+  <script>
+    const today = new Date('2026-05-06T00:00:00');
+
+    let subscribers = [
+      ['001', 'Mae', 'Basic', 'April 06, 2026', 'Monthly', 'May 06, 2026', 700, 'Pending', 'April 06, 2026', 'BDO', 'Active'],
+      ['002', 'Gen', 'Basic', 'April 07, 2026', 'Monthly', 'May 07, 2026', 350, 'Pending', 'April 07, 2026', 'GCASH', 'Active'],
+      ['003', 'Renz', 'Standard', 'April 10, 2026', 'Monthly', 'May 10, 2026', 600, 'Pending', 'April 10, 2026', 'GCASH', 'Active'],
+      ['004', 'Layz', 'Basic', 'April 12, 2026', 'Monthly', 'May 12, 2026', 350, 'Pending', 'April 12, 2026', 'GCASH', 'Active'],
+      ['005', 'Jem', 'Basic', 'April 10, 2026', 'Monthly', 'May 10, 2026', 350, 'Pending', 'April 10, 2026', 'GCASH', 'Active'],
+      ['006', 'Che', 'Basic', 'April 11, 2026', 'Monthly', 'May 11, 2026', 350, 'Pending', 'April 11, 2026', 'GCASH', 'Active'],
+      ['007', 'DJ', 'Basic', 'April 11, 2026', 'Monthly', 'May 11, 2026', 350, 'Pending', 'April 11, 2026', 'GCASH', 'Active'],
+      ['008', 'Thrine', 'Basic', 'April 16, 2026', 'Monthly', 'May 16, 2026', 350, 'Pending', 'April 16, 2026', 'GCASH', 'Active'],
+      ['009', 'Marcus', 'Basic', 'April 21, 2026', 'Monthly', 'May 21, 2026', 350, 'Pending', 'April 21, 2026', 'GCASH', 'Active'],
+      ['010', 'UJ', 'Basic', 'May 04, 2026', 'Monthly', 'June 04, 2026', 400, 'Pending', 'May 04, 2026', 'GCASH', 'Active'],
+      ['011', 'Kevin', 'Basic', 'May 06, 2026', 'Monthly', 'June 06, 2026', 500, 'Pending', 'May 05, 2026', 'GCASH', 'Active'],
+      ['012', 'Monique', 'Basic', 'May 07, 2026', 'Monthly', 'June 07, 2026', 300, 'Pending', 'May 06, 2026', 'GCASH', 'Active']
+    ];
+
+    function parseDate(value) {
+      return new Date(value.replace(',', ''));
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric'
+      });
+    }
+
+    function daysUntilDue(dateText) {
+      const due = parseDate(dateText);
+      return Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+    }
+
+    function getOverdueLabel(days) {
+      return days <= 1 ? 'DUE SOON' : 'OK';
+    }
+
+    function render() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const filter = document.getElementById('statusFilter').value;
+      const tbody = document.getElementById('subscriberTable');
+      tbody.innerHTML = '';
+
+      const filtered = subscribers.filter(row => {
+        const days = daysUntilDue(row[5]);
+        const overdue = getOverdueLabel(days);
+        const matchesSearch = row[0].toLowerCase().includes(search) || row[1].toLowerCase().includes(search);
+        const matchesFilter = filter === 'all' || (filter === 'due' && overdue === 'DUE SOON') || (filter === 'ok' && overdue === 'OK');
+        return matchesSearch && matchesFilter;
+      });
+
+      filtered.forEach(row => {
+        const days = daysUntilDue(row[5]);
+        const overdue = getOverdueLabel(days);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row[0]}</td>
+          <td class="name">${row[1]}</td>
+          <td class="plan">${row[2]}</td>
+          <td>${row[3]}</td>
+          <td>${row[4]}</td>
+          <td>${row[5]}</td>
+          <td>${row[6]}</td>
+          <td class="status"><span class="badge pending">${row[7]}</span></td>
+          <td>${row[8]}</td>
+          <td>${row[9]}</td>
+          <td class="access"><span class="badge active">${row[10]}</span></td>
+          <td>${days}</td>
+          <td class="overdue ${overdue === 'DUE SOON' ? 'overdue-due' : 'overdue-ok'}">${overdue}</td>
+          <td>
+            <button onclick="deleteSubscriber('${row[0]}')" style="background:#ef4444;border:none;padding:6px 10px;border-radius:6px;color:white;font-size:12px;font-weight:700;cursor:pointer;">
+              Delete
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('totalSubscribers').textContent = subscribers.length;
+      document.getElementById('dueSoonCount').textContent = subscribers.filter(r => getOverdueLabel(daysUntilDue(r[5])) === 'DUE SOON').length;
+      document.getElementById('monthlyExpected').textContent = '₱' + subscribers.reduce((sum, r) => sum + Number(r[6]), 0).toLocaleString();
+      document.getElementById('activeAccess').textContent = subscribers.filter(r => r[10] === 'Active').length;
+    }
+
+    function addSubscriber() {
+      const id = document.getElementById('id').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const plan = document.getElementById('plan').value;
+      const amount = document.getElementById('amount').value;
+      const nextDateValue = document.getElementById('nextDate').value;
+      const method = document.getElementById('method').value;
+
+      if (!id || !name || !amount || !nextDateValue) {
+        alert('Please complete Subscriber ID, Name, Amount Due, and Next Payment Date.');
+        return;
+      }
+
+      const nextDate = new Date(nextDateValue + 'T00:00:00');
+      subscribers.push([
+        id,
+        name,
+        plan,
+        formatDate(today),
+        'Monthly',
+        formatDate(nextDate),
+        Number(amount),
+        'Pending',
+        formatDate(today),
+        method,
+        'Active'
+      ]);
+
+      document.querySelectorAll('.form-panel input').forEach(input => input.value = '');
+      render();
+    }
+
+    function exportCSV() {
+      const headers = ['Subscriber ID','Name','Plan','Start Date','Billing Cycle','Next Payment Date','Amount Due','Payment Status','Last Payment Date','Payment Method','Server Access','Days Until Due','Overdue?'];
+      const rows = subscribers.map(row => {
+        const days = daysUntilDue(row[5]);
+        return [...row, days, getOverdueLabel(days)];
+      });
+      const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'jellyfin_advanced_tracker.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function deleteSubscriber(id) {
+      const confirmDelete = confirm('Delete subscriber ' + id + '?');
+      if (!confirmDelete) return;
+
+      subscribers = subscribers.filter(sub => sub[0] !== id);
+      render();
+    }
+
+    function resetData() {
+      location.reload();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', render);
+    document.getElementById('statusFilter').addEventListener('change', render);
+    render();
+  </script>
+</body>
+</html>
