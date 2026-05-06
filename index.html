@@ -282,12 +282,12 @@
           <tr>
             <td><strong>Standard</strong></td>
             <td>3 Devices</td>
-            <td>1080p / 4K</td>
+            <td>1080p</td>
           </tr>
           <tr>
             <td><strong>Premium</strong></td>
             <td>5 Devices</td>
-            <td>4K HDR</td>
+            <td>1080p</td>
           </tr>
         </tbody>
       </table>
@@ -403,16 +403,21 @@
           <td>${row[4]}</td>
           <td>${row[5]}</td>
           <td>${row[6]}</td>
-          <td class="status"><span class="badge pending">${row[7]}</span></td>
+          <td class="status"><span class="badge ${row[7] === 'Paid' ? 'active' : 'pending'}">${row[7]}</span></td>
           <td>${row[8]}</td>
           <td>${row[9]}</td>
           <td class="access"><span class="badge active">${row[10]}</span></td>
           <td>${days}</td>
           <td class="overdue ${overdue === 'DUE SOON' ? 'overdue-due' : 'overdue-ok'}">${overdue}</td>
           <td>
-            <button onclick="deleteSubscriber('${row[0]}')" style="background:#ef4444;border:none;padding:6px 10px;border-radius:6px;color:white;font-size:12px;font-weight:700;cursor:pointer;">
-              Delete
-            </button>
+            <div style="display:flex;gap:6px;justify-content:center;">
+              <button onclick="markAsPaid('${row[0]}')" style="background:#16a34a;border:none;padding:6px 10px;border-radius:6px;color:white;font-size:12px;font-weight:700;cursor:pointer;">
+                Paid
+              </button>
+              <button onclick="deleteSubscriber('${row[0]}')" style="background:#ef4444;border:none;padding:6px 10px;border-radius:6px;color:white;font-size:12px;font-weight:700;cursor:pointer;">
+                Delete
+              </button>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -478,6 +483,25 @@
       a.download = 'jellyfin_advanced_tracker.csv';
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    function markAsPaid(id) {
+      const subscriber = subscribers.find(sub => sub[0] === id);
+      if (!subscriber) return;
+
+      const currentNextPayment = parseDate(subscriber[5]);
+      const updatedNextPayment = addOneMonth(currentNextPayment);
+
+      subscriber[7] = 'Paid';
+      subscriber[8] = formatDate(today);
+      subscriber[5] = formatDate(updatedNextPayment);
+
+      setTimeout(() => {
+        subscriber[7] = 'Pending';
+        render();
+      }, 2000);
+
+      render();
     }
 
     function deleteSubscriber(id) {
