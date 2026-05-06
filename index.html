@@ -403,7 +403,7 @@
           <td>${row[4]}</td>
           <td>${row[5]}</td>
           <td>${row[6]}</td>
-          <td class="status"><span class="badge ${row[7] === 'Paid' ? 'active' : 'pending'}">${row[7]}</span></td>
+          <td class="status"><span class="badge ${days <= 0 ? 'pending' : (row[7] === 'Paid' ? 'active' : 'pending')}">${days <= 0 ? 'Pending' : row[7]}</span></td>
           <td>${row[8]}</td>
           <td>${row[9]}</td>
           <td class="access"><span class="badge active">${row[10]}</span></td>
@@ -459,7 +459,7 @@
         'Monthly',
         formatDate(nextPaymentDate),
         Number(amount),
-        'Pending',
+        'Paid',
         formatDate(startDate),
         method,
         'Active'
@@ -495,11 +495,6 @@
       subscriber[7] = 'Paid';
       subscriber[8] = formatDate(today);
       subscriber[5] = formatDate(updatedNextPayment);
-
-      setTimeout(() => {
-        subscriber[7] = 'Pending';
-        render();
-      }, 2000);
 
       render();
     }
