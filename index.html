@@ -292,7 +292,7 @@
         <option>Premium</option>
       </select>
       <input id="amount" type="number" placeholder="Amount Due" />
-      <input id="nextDate" type="date" />
+      <input id="nextDate" type="date" title="Start Date / Last Payment Date" />
       <select id="method">
         <option>GCASH</option>
         <option>BDO</option>
@@ -390,30 +390,38 @@
       document.getElementById('activeAccess').textContent = subscribers.filter(r => r[10] === 'Active').length;
     }
 
+    function addOneMonth(date) {
+      const next = new Date(date);
+      next.setMonth(next.getMonth() + 1);
+      return next;
+    }
+
     function addSubscriber() {
       const id = document.getElementById('id').value.trim();
       const name = document.getElementById('name').value.trim();
       const plan = document.getElementById('plan').value;
       const amount = document.getElementById('amount').value;
-      const nextDateValue = document.getElementById('nextDate').value;
+      const startDateValue = document.getElementById('nextDate').value;
       const method = document.getElementById('method').value;
 
-      if (!id || !name || !amount || !nextDateValue) {
-        alert('Please complete Subscriber ID, Name, Amount Due, and Next Payment Date.');
+      if (!id || !name || !amount || !startDateValue) {
+        alert('Please complete Subscriber ID, Name, Amount Due, and Start Date.');
         return;
       }
 
-      const nextDate = new Date(nextDateValue + 'T00:00:00');
+      const startDate = new Date(startDateValue + 'T00:00:00');
+      const nextPaymentDate = addOneMonth(startDate);
+
       subscribers.push([
         id,
         name,
         plan,
-        formatDate(today),
+        formatDate(startDate),
         'Monthly',
-        formatDate(nextDate),
+        formatDate(nextPaymentDate),
         Number(amount),
         'Pending',
-        formatDate(today),
+        formatDate(startDate),
         method,
         'Active'
       ]);
