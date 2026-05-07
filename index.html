@@ -7,20 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0d0f14;
-      --surface: #161922;
-      --surface2: #1e2230;
-      --border: #2a2f42;
-      --accent: #c8f542;
-      --accent2: #42f5a7;
-      --danger: #ff4d6d;
-      --warn: #ffd166;
-      --info: #60a5fa;
-      --purple: #a78bfa;
-      --text: #e8eaf2;
-      --muted: #7b82a0;
-      --mono: 'Space Mono', monospace;
-      --sans: 'DM Sans', sans-serif;
+      --bg: #0d0f14; --surface: #161922; --surface2: #1e2230; --border: #2a2f42;
+      --accent: #c8f542; --accent2: #42f5a7; --danger: #ff4d6d; --warn: #ffd166;
+      --info: #60a5fa; --purple: #a78bfa; --text: #e8eaf2; --muted: #7b82a0;
+      --mono: 'Space Mono', monospace; --sans: 'DM Sans', sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
@@ -35,11 +25,7 @@
       padding: 48px 44px; width: 100%; max-width: 420px; box-shadow: 0 0 80px rgba(200,245,66,0.08);
     }
     .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-    .login-logo .icon {
-      width: 44px; height: 44px; background: var(--accent); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-weight: 700; color: #0d0f14; font-size: 18px;
-    }
+    .login-logo .icon { width: 44px; height: 44px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; color: #0d0f14; font-size: 18px; }
     .login-logo h2 { font-family: var(--mono); font-size: 16px; color: var(--text); line-height: 1.2; }
     .login-logo h2 span { color: var(--accent); }
     .login-box h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
@@ -55,12 +41,7 @@
 
     /* ── APP ── */
     #app { display: none; }
-
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 28px; background: var(--surface); border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 100; gap: 12px; flex-wrap: wrap;
-    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; gap: 12px; flex-wrap: wrap; }
     .brand { display: flex; align-items: center; gap: 10px; }
     .brand .icon { width: 34px; height: 34px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; color: #0d0f14; font-size: 14px; flex-shrink: 0; }
     .brand-text { font-family: var(--mono); font-size: 14px; }
@@ -74,25 +55,29 @@
     input:focus, select:focus { border-color: var(--accent); }
     select option { background: var(--surface2); }
 
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px; background: var(--surface2);
-      border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 13px;
-      font-family: var(--sans); font-weight: 600; color: var(--text); cursor: pointer;
-      transition: border-color .2s, background .2s; white-space: nowrap;
-    }
+    .btn { display: inline-flex; align-items: center; gap: 6px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 13px; font-family: var(--sans); font-weight: 600; color: var(--text); cursor: pointer; transition: border-color .2s, background .2s; white-space: nowrap; }
     .btn:hover { border-color: var(--accent); background: rgba(200,245,66,.05); }
     .btn.accent { background: var(--accent); color: #0d0f14; border-color: var(--accent); }
     .btn.accent:hover { opacity: .9; }
-    .btn.info-btn { background: rgba(96,165,250,.15); color: var(--info); border-color: rgba(96,165,250,.3); }
+    .btn.danger-btn { background: rgba(255,77,109,.15); color: var(--danger); border-color: rgba(255,77,109,.3); }
+    .btn.danger-btn:hover { background: rgba(255,77,109,.25); border-color: var(--danger); }
     .logout-btn { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px; font-size: 13px; color: var(--muted); cursor: pointer; font-family: var(--sans); transition: color .2s, border-color .2s; }
     .logout-btn:hover { color: var(--danger); border-color: var(--danger); }
 
+    /* ── SAVE TOAST ── */
+    #saveToast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      background: var(--surface); border: 1px solid rgba(200,245,66,.4); border-radius: 10px;
+      padding: 10px 16px; font-size: 13px; font-family: var(--mono); color: var(--accent);
+      box-shadow: 0 4px 24px rgba(0,0,0,.4);
+      opacity: 0; transform: translateY(10px); transition: opacity .25s, transform .25s; pointer-events: none;
+    }
+    #saveToast.show { opacity: 1; transform: translateY(0); }
+
     /* ── CONTENT ── */
     .content { padding: 22px 28px; }
-
-    /* ── TAB NAV ── */
-    .tab-nav { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
-    .tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; font-family: var(--sans); transition: color .2s, border-color .2s; margin-bottom: -1px; }
+    .tab-nav { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+    .tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; font-family: var(--sans); transition: color .2s, border-color .2s; margin-bottom: -1px; white-space: nowrap; flex-shrink: 0; }
     .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
     .tab-btn:hover { color: var(--text); }
     .tab-pane { display: none; }
@@ -155,7 +140,7 @@
     .form-grid input, .form-grid select { width: 100%; }
     .form-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 
-    /* ── REVENUE TAB ── */
+    /* ── REVENUE ── */
     .rev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .rev-bar-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
     .rev-bar-wrap h3 { font-family: var(--mono); font-size: 13px; margin-bottom: 16px; color: var(--accent); }
@@ -164,35 +149,44 @@
     .bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; }
     .bar-fill { height: 100%; border-radius: 4px; transition: width .6s ease; }
     .bar-row .bar-val { width: 70px; font-family: var(--mono); font-size: 12px; color: var(--text); }
-
     .method-list { list-style: none; }
     .method-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
     .method-list li:last-child { border-bottom: none; }
     .method-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
 
-    /* ── MODAL ── */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+    /* ── MODALS ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.open { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 560px; max-height: 85vh; overflow-y: auto; }
-    .modal-header { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-header { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--surface); z-index: 1; }
     .modal-header h2 { font-family: var(--mono); font-size: 14px; }
     .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; line-height: 1; padding: 0 4px; }
     .modal-close:hover { color: var(--danger); }
     .modal-body { padding: 18px 20px; }
 
+    /* ── CONFIRM PAID MODAL ── */
+    .confirm-modal { max-width: 400px; }
+    .confirm-body { padding: 32px 28px; text-align: center; }
+    .confirm-emoji { font-size: 44px; margin-bottom: 14px; }
+    .confirm-sub-name { font-family: var(--mono); font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .confirm-sub-meta { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+    .confirm-amount-box { background: rgba(66,245,167,.08); border: 1px solid rgba(66,245,167,.2); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .confirm-amount-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+    .confirm-amount-value { font-family: var(--mono); font-size: 32px; font-weight: 700; color: var(--accent2); }
+    .confirm-details { background: var(--surface2); border-radius: 10px; padding: 12px 14px; text-align: left; margin-bottom: 24px; }
+    .confirm-detail-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+    .confirm-detail-row:last-child { border-bottom: none; }
+    .confirm-detail-row span:first-child { color: var(--muted); }
+    .confirm-detail-row span:last-child { font-weight: 600; }
+    .confirm-btns { display: flex; gap: 10px; }
+    .confirm-btns .btn { flex: 1; justify-content: center; padding: 11px; font-size: 14px; }
+
     .hist-entry { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(42,47,66,.5); font-size: 13px; }
     .hist-entry:last-child { border-bottom: none; }
     .hist-date { color: var(--muted); font-size: 12px; font-family: var(--mono); }
     .hist-amount { font-family: var(--mono); color: var(--accent2); font-weight: 700; }
-
     .note-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--text); font-family: var(--sans); resize: vertical; min-height: 90px; outline: none; }
     .note-input:focus { border-color: var(--accent); }
-
-    /* ── SUBSCRIBER CARD (mobile list) ── */
-    .sub-info-row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
-    .sub-info-item { font-size: 13px; }
-    .sub-info-item .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
-    .sub-info-item .val { font-weight: 600; }
 
     @media (max-width: 900px) {
       .stats { grid-template-columns: repeat(2, 1fr); }
@@ -200,12 +194,13 @@
       .topbar { padding: 12px 14px; }
       .rev-grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 560px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-    }
+    @media (max-width: 560px) { .stats { grid-template-columns: 1fr 1fr; } }
   </style>
 </head>
 <body>
+
+<!-- ── SAVE TOAST ── -->
+<div id="saveToast">✓ Data saved</div>
 
 <!-- ── LOGIN ── -->
 <div id="loginScreen">
@@ -260,46 +255,23 @@
   </header>
 
   <div class="content">
-
-    <!-- TAB NAV -->
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-      <button class="tab-btn" onclick="switchTab('subscribers')">👥 Subscribers</button>
-      <button class="tab-btn" onclick="switchTab('revenue')">💰 Revenue</button>
-      <button class="tab-btn" onclick="switchTab('plans')">📋 Plans</button>
+      <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+      <button class="tab-btn" data-tab="subscribers" onclick="switchTab('subscribers',this)">👥 Subscribers</button>
+      <button class="tab-btn" data-tab="revenue" onclick="switchTab('revenue',this)">💰 Revenue</button>
+      <button class="tab-btn" data-tab="plans" onclick="switchTab('plans',this)">📋 Plans</button>
     </div>
 
-    <!-- ══ DASHBOARD TAB ══ -->
+    <!-- ══ DASHBOARD ══ -->
     <div id="tab-dashboard" class="tab-pane active">
       <div class="stats">
-        <div class="stat-card">
-          <div class="stat-label">Total Subscribers</div>
-          <div class="stat-value" id="totalSubscribers">0</div>
-          <div class="stat-sub">All accounts</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Due Soon</div>
-          <div class="stat-value" id="dueSoonCount">0</div>
-          <div class="stat-sub">Within 1 day</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Monthly Expected</div>
-          <div class="stat-value" id="monthlyExpected">₱0</div>
-          <div class="stat-sub">Total billing</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Active Access</div>
-          <div class="stat-value" id="activeAccess">0</div>
-          <div class="stat-sub" id="deactivatedCount">0 deactivated</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Collected</div>
-          <div class="stat-value" id="totalCollected">₱0</div>
-          <div class="stat-sub">All-time payments</div>
-        </div>
+        <div class="stat-card"><div class="stat-label">Total Subscribers</div><div class="stat-value" id="totalSubscribers">0</div><div class="stat-sub">All accounts</div></div>
+        <div class="stat-card"><div class="stat-label">Due Soon</div><div class="stat-value" id="dueSoonCount">0</div><div class="stat-sub">Within 1 day</div></div>
+        <div class="stat-card"><div class="stat-label">Monthly Expected</div><div class="stat-value" id="monthlyExpected">₱0</div><div class="stat-sub">Total billing</div></div>
+        <div class="stat-card"><div class="stat-label">Active Access</div><div class="stat-value" id="activeAccess">0</div><div class="stat-sub" id="deactivatedCount">0 deactivated</div></div>
+        <div class="stat-card"><div class="stat-label">Total Collected</div><div class="stat-value" id="totalCollected">₱0</div><div class="stat-sub">All-time payments</div></div>
       </div>
 
-      <!-- Due Soon Alert -->
       <div id="dueSoonAlert" class="panel" style="border-color:rgba(255,209,102,.3);display:none;">
         <div class="panel-header" style="background:rgba(255,209,102,.06);">
           <div><h2 style="color:var(--warn)">⚠ Subscribers Due Soon</h2><p>These accounts need payment attention</p></div>
@@ -312,7 +284,6 @@
         </div>
       </div>
 
-      <!-- Recent Activity -->
       <div class="panel">
         <div class="panel-header"><div><h2>Recent Payment Activity</h2><p>Last 5 payment records</p></div></div>
         <div class="table-scroll">
@@ -324,12 +295,10 @@
       </div>
     </div>
 
-    <!-- ══ SUBSCRIBERS TAB ══ -->
+    <!-- ══ SUBSCRIBERS ══ -->
     <div id="tab-subscribers" class="tab-pane">
       <div class="panel">
-        <div class="panel-header">
-          <div><h2>All Subscribers</h2><p id="subCountLabel">Showing all</p></div>
-        </div>
+        <div class="panel-header"><div><h2>All Subscribers</h2><p id="subCountLabel">Showing all</p></div></div>
         <div class="table-scroll">
           <table>
             <thead>
@@ -345,7 +314,6 @@
         </div>
       </div>
 
-      <!-- Add Form -->
       <div class="form-panel">
         <div class="form-title">+ Add New Subscriber</div>
         <div class="form-grid">
@@ -360,22 +328,16 @@
         </div>
         <div class="form-actions">
           <button class="btn accent" onclick="addSubscriber()">Add Subscriber</button>
-          <button class="btn" onclick="resetData()">↺ Reset Data</button>
+          <button class="btn danger-btn" onclick="promptReset()">↺ Reset All Data</button>
         </div>
       </div>
     </div>
 
-    <!-- ══ REVENUE TAB ══ -->
+    <!-- ══ REVENUE ══ -->
     <div id="tab-revenue" class="tab-pane">
       <div class="rev-grid">
-        <div class="rev-bar-wrap">
-          <h3>Revenue by Plan</h3>
-          <div id="planRevBars"></div>
-        </div>
-        <div class="rev-bar-wrap">
-          <h3>Payment Methods Breakdown</h3>
-          <ul class="method-list" id="methodList"></ul>
-        </div>
+        <div class="rev-bar-wrap"><h3>Revenue by Plan</h3><div id="planRevBars"></div></div>
+        <div class="rev-bar-wrap"><h3>Payment Methods Breakdown</h3><ul class="method-list" id="methodList"></ul></div>
       </div>
       <div class="panel" style="margin-top:0">
         <div class="panel-header"><div><h2>Payment History Log</h2><p>All recorded payments</p></div></div>
@@ -388,7 +350,7 @@
       </div>
     </div>
 
-    <!-- ══ PLANS TAB ══ -->
+    <!-- ══ PLANS ══ -->
     <div id="tab-plans" class="tab-pane">
       <div class="panel">
         <div class="panel-header"><div><h2>Plan Device Limits</h2><p>Allowed devices per subscription plan</p></div></div>
@@ -399,12 +361,11 @@
       </div>
       <div class="panel">
         <div class="panel-header"><div><h2>Plan Distribution</h2><p>Subscriber count per plan</p></div></div>
-        <div style="padding:20px 20px" id="planDistBars"></div>
+        <div style="padding:20px" id="planDistBars"></div>
       </div>
     </div>
-
-  </div><!-- .content -->
-</div><!-- #app -->
+  </div>
+</div>
 
 <!-- ── PAYMENT HISTORY MODAL ── -->
 <div class="modal-overlay" id="histModal">
@@ -434,10 +395,92 @@
   </div>
 </div>
 
+<!-- ── CONFIRM PAID MODAL ── -->
+<div class="modal-overlay" id="confirmPaidModal">
+  <div class="modal confirm-modal">
+    <div class="confirm-body">
+      <div class="confirm-emoji">💳</div>
+      <div class="confirm-sub-name" id="cpName"></div>
+      <div class="confirm-sub-meta" id="cpMeta"></div>
+      <div class="confirm-amount-box">
+        <div class="confirm-amount-label">Payment Amount</div>
+        <div class="confirm-amount-value" id="cpAmount"></div>
+      </div>
+      <div class="confirm-details">
+        <div class="confirm-detail-row"><span>Plan</span><span id="cpPlan"></span></div>
+        <div class="confirm-detail-row"><span>Payment Method</span><span id="cpMethod"></span></div>
+        <div class="confirm-detail-row"><span>Next billing after</span><span id="cpNextDate" style="font-family:var(--mono);font-size:12px;color:var(--accent)"></span></div>
+      </div>
+      <div class="confirm-btns">
+        <button class="btn" onclick="closeModal('confirmPaidModal')">Cancel</button>
+        <button class="btn accent" onclick="executePaid()">✓ Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONFIRM RESET MODAL ── -->
+<div class="modal-overlay" id="confirmResetModal">
+  <div class="modal confirm-modal">
+    <div class="confirm-body">
+      <div class="confirm-emoji">⚠️</div>
+      <div class="confirm-sub-name" style="color:var(--danger)">Reset All Data?</div>
+      <div class="confirm-sub-meta" style="margin-top:8px;line-height:1.6">This will permanently erase all subscriber records, payment history, and notes stored in this browser. This cannot be undone.</div>
+      <div class="confirm-btns" style="margin-top:28px">
+        <button class="btn" onclick="closeModal('confirmResetModal')">Cancel</button>
+        <button class="btn danger-btn" onclick="executeReset()">Yes, Reset Everything</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-// ── AUTH ──────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────
+// STORAGE
+// ─────────────────────────────────────────────────
+const STORAGE_KEY = 'jf_tracker_data_v2';
+
+const DEFAULT_DATA = [
+  ['001','Mae','Basic','April 06, 2026','Monthly','May 06, 2026',700,'Paid','April 06, 2026','BDO','Active','',[{date:'April 06, 2026',amount:700,method:'BDO'}]],
+  ['002','Gen','Basic','April 07, 2026','Monthly','May 07, 2026',350,'Paid','April 07, 2026','GCASH','Active','',[{date:'April 07, 2026',amount:350,method:'GCASH'}]],
+  ['003','Renz','Standard','April 10, 2026','Monthly','May 10, 2026',600,'Paid','April 10, 2026','GCASH','Active','',[{date:'April 10, 2026',amount:600,method:'GCASH'}]],
+  ['004','Layz','Basic','April 12, 2026','Monthly','May 12, 2026',350,'Paid','April 12, 2026','GCASH','Active','',[{date:'April 12, 2026',amount:350,method:'GCASH'}]],
+  ['005','Jem','Basic','April 10, 2026','Monthly','May 10, 2026',350,'Paid','April 10, 2026','GCASH','Active','',[{date:'April 10, 2026',amount:350,method:'GCASH'}]],
+  ['006','Che','Basic','April 11, 2026','Monthly','May 11, 2026',350,'Paid','April 11, 2026','GCASH','Active','',[{date:'April 11, 2026',amount:350,method:'GCASH'}]],
+  ['007','DJ','Basic','April 11, 2026','Monthly','May 11, 2026',350,'Paid','April 11, 2026','GCASH','Active','',[{date:'April 11, 2026',amount:350,method:'GCASH'}]],
+  ['008','Thrine','Basic','April 16, 2026','Monthly','May 16, 2026',350,'Paid','April 16, 2026','GCASH','Active','',[{date:'April 16, 2026',amount:350,method:'GCASH'}]],
+  ['009','Marcus','Basic','April 21, 2026','Monthly','May 21, 2026',350,'Paid','April 21, 2026','GCASH','Active','',[{date:'April 21, 2026',amount:350,method:'GCASH'}]],
+  ['010','UJ','Basic','May 04, 2026','Monthly','June 04, 2026',400,'Paid','May 04, 2026','GCASH','Active','',[{date:'May 04, 2026',amount:400,method:'GCASH'}]],
+  ['011','Kevin','Basic','May 06, 2026','Monthly','June 06, 2026',500,'Paid','May 05, 2026','GCASH','Active','',[{date:'May 05, 2026',amount:500,method:'GCASH'}]],
+  ['012','Monique','Basic','May 07, 2026','Monthly','June 07, 2026',300,'Paid','May 06, 2026','GCASH','Active','',[{date:'May 06, 2026',amount:300,method:'GCASH'}]],
+];
+
+function loadSubscribers() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+
+let _toastTimer = null;
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(subscribers));
+    const toast = document.getElementById('saveToast');
+    toast.classList.add('show');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+  } catch(e) {}
+}
+
+// ─────────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────────
 const CREDENTIALS = { username: 'rrpsabino', password: 'Bradpi++77' };
 let currentNoteId = null;
+let pendingPaidId = null;
+const today = new Date('2026-05-07T00:00:00');
 
 function doLogin() {
   const u = document.getElementById('loginUser').value.trim();
@@ -450,50 +493,31 @@ function doLogin() {
     document.getElementById('loginError').style.display = 'block';
   }
 }
-['loginPass','loginUser'].forEach(id => {
-  document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-});
+['loginPass','loginUser'].forEach(id =>
+  document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); })
+);
 function doLogout() {
-  document.getElementById('loginUser').value = '';
-  document.getElementById('loginPass').value = '';
+  ['loginUser','loginPass'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('loginError').style.display = 'none';
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
 }
 
-// ── TABS ──────────────────────────────────────────────────────
-function switchTab(name) {
+// ─────────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────────
+function switchTab(name, btn) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.currentTarget.classList.add('active');
+  (btn || document.querySelector(`[data-tab="${name}"]`)).classList.add('active');
   renderAll();
 }
 
-// ── DATA ──────────────────────────────────────────────────────
-const today = new Date('2026-05-07T00:00:00');
-
-// Each row: [id, name, plan, startDate, billing, nextPayment, amount, payStatus, lastPayment, method, access, notes, payHistory[]]
-let subscribers = [
-  ['001','Mae','Basic','April 06, 2026','Monthly','May 06, 2026',700,'Paid','April 06, 2026','BDO','Active','',[]],
-  ['002','Gen','Basic','April 07, 2026','Monthly','May 07, 2026',350,'Paid','April 07, 2026','GCASH','Active','',[]],
-  ['003','Renz','Standard','April 10, 2026','Monthly','May 10, 2026',600,'Paid','April 10, 2026','GCASH','Active','',[]],
-  ['004','Layz','Basic','April 12, 2026','Monthly','May 12, 2026',350,'Paid','April 12, 2026','GCASH','Active','',[]],
-  ['005','Jem','Basic','April 10, 2026','Monthly','May 10, 2026',350,'Paid','April 10, 2026','GCASH','Active','',[]],
-  ['006','Che','Basic','April 11, 2026','Monthly','May 11, 2026',350,'Paid','April 11, 2026','GCASH','Active','',[]],
-  ['007','DJ','Basic','April 11, 2026','Monthly','May 11, 2026',350,'Paid','April 11, 2026','GCASH','Active','',[]],
-  ['008','Thrine','Basic','April 16, 2026','Monthly','May 16, 2026',350,'Paid','April 16, 2026','GCASH','Active','',[]],
-  ['009','Marcus','Basic','April 21, 2026','Monthly','May 21, 2026',350,'Paid','April 21, 2026','GCASH','Active','',[]],
-  ['010','UJ','Basic','May 04, 2026','Monthly','June 04, 2026',400,'Paid','May 04, 2026','GCASH','Active','',[]],
-  ['011','Kevin','Basic','May 06, 2026','Monthly','June 06, 2026',500,'Paid','May 05, 2026','GCASH','Active','',[]],
-  ['012','Monique','Basic','May 07, 2026','Monthly','June 07, 2026',300,'Paid','May 06, 2026','GCASH','Active','',[]],
-];
-
-// Populate initial pay history from last payment
-subscribers.forEach(r => {
-  if (!r[12]) r[12] = [];
-  if (r[8]) r[12].push({ date: r[8], amount: r[6], method: r[9] });
-});
+// ─────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────
+let subscribers = loadSubscribers();
 
 function parseDate(v) { return new Date(v.replace(',', '')); }
 function formatDate(d) { return d.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }); }
@@ -508,8 +532,7 @@ function getFiltered() {
   const af = document.getElementById('accessFilter').value;
   const pf = document.getElementById('planFilter').value;
   return subscribers.filter(r => {
-    const days = daysUntil(r[5]);
-    const ol = overdueLabel(days);
+    const ol = overdueLabel(daysUntil(r[5]));
     return (r[0].toLowerCase().includes(search) || r[1].toLowerCase().includes(search)) &&
       (sf === 'all' || (sf === 'due' && ol === 'DUE SOON') || (sf === 'ok' && ol === 'OK')) &&
       (af === 'all' || r[10] === af) &&
@@ -517,14 +540,11 @@ function getFiltered() {
   });
 }
 
-// ── RENDER ALL ────────────────────────────────────────────────
+// ─────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────
 function renderAll() {
-  renderStats();
-  renderSubscriberTable();
-  renderDueSoon();
-  renderRecent();
-  renderRevenue();
-  renderPlans();
+  renderStats(); renderSubscriberTable(); renderDueSoon(); renderRecent(); renderRevenue(); renderPlans();
 }
 
 function renderStats() {
@@ -532,25 +552,22 @@ function renderStats() {
   const due = subscribers.filter(r => overdueLabel(daysUntil(r[5])) === 'DUE SOON').length;
   const monthly = subscribers.reduce((s, r) => s + Number(r[6]), 0);
   const active = subscribers.filter(r => r[10] === 'Active').length;
-  const deactivated = total - active;
-  const collected = subscribers.reduce((s, r) => s + (r[12] || []).reduce((a, h) => a + Number(h.amount), 0), 0);
+  const collected = subscribers.reduce((s, r) => s + (r[12]||[]).reduce((a, h) => a + Number(h.amount), 0), 0);
   document.getElementById('totalSubscribers').textContent = total;
   document.getElementById('dueSoonCount').textContent = due;
   document.getElementById('monthlyExpected').textContent = '₱' + monthly.toLocaleString();
   document.getElementById('activeAccess').textContent = active;
-  document.getElementById('deactivatedCount').textContent = deactivated + ' deactivated';
+  document.getElementById('deactivatedCount').textContent = (total - active) + ' deactivated';
   document.getElementById('totalCollected').textContent = '₱' + collected.toLocaleString();
 }
 
 function renderDueSoon() {
   const dueSubs = subscribers.filter(r => overdueLabel(daysUntil(r[5])) === 'DUE SOON');
-  const alert = document.getElementById('dueSoonAlert');
-  const tbody = document.getElementById('dueSoonTable');
-  if (dueSubs.length === 0) { alert.style.display = 'none'; return; }
-  alert.style.display = 'block';
-  tbody.innerHTML = dueSubs.map(r => {
-    const days = daysUntil(r[5]);
-    const isActive = r[10] === 'Active';
+  const alertEl = document.getElementById('dueSoonAlert');
+  if (!dueSubs.length) { alertEl.style.display = 'none'; return; }
+  alertEl.style.display = 'block';
+  document.getElementById('dueSoonTable').innerHTML = dueSubs.map(r => {
+    const days = daysUntil(r[5]); const isActive = r[10] === 'Active';
     return `<tr>
       <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${r[0]}</td>
       <td class="name-cell">${r[1]}</td>
@@ -583,9 +600,7 @@ function renderSubscriberTable() {
   const filtered = getFiltered();
   document.getElementById('subCountLabel').textContent = `Showing ${filtered.length} of ${subscribers.length}`;
   document.getElementById('subscriberTable').innerHTML = filtered.map(row => {
-    const days = daysUntil(row[5]);
-    const ol = overdueLabel(days);
-    const isActive = row[10] === 'Active';
+    const days = daysUntil(row[5]); const ol = overdueLabel(days); const isActive = row[10] === 'Active';
     return `<tr>
       <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${row[0]}</td>
       <td class="name-cell">${row[1]}</td>
@@ -598,17 +613,21 @@ function renderSubscriberTable() {
       <td style="color:var(--muted);font-size:12px">${row[8]}</td>
       <td style="font-size:12px">${row[9]}</td>
       <td>
-        <select class="access-select" data-id="${row[0]}" style="background:${isActive ? 'rgba(200,245,66,.1)' : 'rgba(255,77,109,.1)'};border:1px solid ${isActive ? 'rgba(200,245,66,.3)' : 'rgba(255,77,109,.3)'};color:${isActive ? 'var(--accent)' : 'var(--danger)'};font-weight:700;font-size:11px;padding:4px 8px;border-radius:6px;cursor:pointer;font-family:var(--sans);">
-          <option value="Active" ${isActive ? 'selected' : ''}>Active</option>
-          <option value="Deactivated" ${!isActive ? 'selected' : ''}>Deactivated</option>
+        <select class="access-select" data-id="${row[0]}"
+          style="background:${isActive?'rgba(200,245,66,.1)':'rgba(255,77,109,.1)'};
+                 border:1px solid ${isActive?'rgba(200,245,66,.3)':'rgba(255,77,109,.3)'};
+                 color:${isActive?'var(--accent)':'var(--danger)'};
+                 font-weight:700;font-size:11px;padding:4px 8px;border-radius:6px;cursor:pointer;font-family:var(--sans);">
+          <option value="Active" ${isActive?'selected':''}>Active</option>
+          <option value="Deactivated" ${!isActive?'selected':''}>Deactivated</option>
         </select>
       </td>
       <td style="font-family:var(--mono)">${days}</td>
       <td><span class="badge ${ol === 'DUE SOON' ? 'due' : 'ok'}">${ol}</span></td>
-      <td class="notes-cell" title="${row[11] || ''}">${row[11] || '<span style="color:var(--border)">—</span>'}</td>
+      <td class="notes-cell" title="${row[11]||''}">${row[11]||'<span style="color:var(--border)">—</span>'}</td>
       <td>
         <div class="action-btns">
-          <button class="tbl-btn paid-btn" onclick="markPaid('${row[0]}')">Paid</button>
+          <button class="tbl-btn paid-btn" onclick="openPaidConfirm('${row[0]}')">Paid</button>
           <button class="tbl-btn hist-btn" onclick="showHistory('${row[0]}')">History</button>
           <button class="tbl-btn note-btn" onclick="openNote('${row[0]}')">Note</button>
           <button class="tbl-btn del-btn" onclick="deleteSub('${row[0]}')">Del</button>
@@ -620,13 +639,12 @@ function renderSubscriberTable() {
   document.querySelectorAll('.access-select').forEach(sel => {
     sel.addEventListener('change', function() {
       const sub = subscribers.find(s => s[0] === this.dataset.id);
-      if (sub) { sub[10] = this.value; renderAll(); }
+      if (sub) { sub[10] = this.value; persist(); renderAll(); }
     });
   });
 }
 
 function renderRevenue() {
-  // Plan revenue bars
   const plans = ['Basic','Standard','Premium'];
   const colors = ['var(--info)','var(--purple)','var(--accent)'];
   const planRevs = plans.map(p => subscribers.filter(r => r[2] === p).reduce((s, r) => s + Number(r[6]), 0));
@@ -636,66 +654,88 @@ function renderRevenue() {
       <span class="bar-label">${p}</span>
       <div class="bar-track"><div class="bar-fill" style="width:${(planRevs[i]/maxRev*100).toFixed(1)}%;background:${colors[i]}"></div></div>
       <span class="bar-val">₱${planRevs[i].toLocaleString()}</span>
-    </div>
-  `).join('');
+    </div>`).join('');
 
-  // Method breakdown
   const methods = {};
-  subscribers.forEach(r => { methods[r[9]] = (methods[r[9]] || 0) + Number(r[6]); });
-  const methodColors = { GCASH: '#3b82f6', BDO: '#f59e0b', MAYA: '#10b981', CASH: '#a78bfa' };
-  const total = Object.values(methods).reduce((a, b) => a + b, 0);
-  document.getElementById('methodList').innerHTML = Object.entries(methods)
-    .sort((a, b) => b[1] - a[1])
-    .map(([k, v]) => `<li>
-      <span><span class="method-dot" style="background:${methodColors[k]||'#888'}"></span>${k}</span>
-      <span style="font-family:var(--mono)">₱${v.toLocaleString()} <span style="color:var(--muted);font-size:11px">(${((v/total)*100).toFixed(0)}%)</span></span>
+  subscribers.forEach(r => { methods[r[9]] = (methods[r[9]]||0) + Number(r[6]); });
+  const mColors = { GCASH:'#3b82f6', BDO:'#f59e0b', MAYA:'#10b981', CASH:'#a78bfa' };
+  const mTotal = Object.values(methods).reduce((a,b) => a+b, 0);
+  document.getElementById('methodList').innerHTML = Object.entries(methods).sort((a,b)=>b[1]-a[1]).map(([k,v]) => `
+    <li>
+      <span><span class="method-dot" style="background:${mColors[k]||'#888'}"></span>${k}</span>
+      <span style="font-family:var(--mono)">₱${v.toLocaleString()} <span style="color:var(--muted);font-size:11px">(${((v/mTotal)*100).toFixed(0)}%)</span></span>
     </li>`).join('');
 
-  // Payment history log
-  const allHistory = [];
-  subscribers.forEach(r => (r[12]||[]).forEach(h => allHistory.push({id:r[0],name:r[1],plan:r[2],...h})));
-  allHistory.sort((a,b) => parseDate(b.date) - parseDate(a.date));
-  document.getElementById('payHistTable').innerHTML = allHistory.map(h => `<tr>
+  const allHist = [];
+  subscribers.forEach(r => (r[12]||[]).forEach(h => allHist.push({id:r[0],name:r[1],plan:r[2],...h})));
+  allHist.sort((a,b) => parseDate(b.date) - parseDate(a.date));
+  document.getElementById('payHistTable').innerHTML = allHist.map(h => `<tr>
     <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${h.id}</td>
     <td class="name-cell">${h.name}</td>
     <td style="font-family:var(--mono);color:var(--accent2)">₱${Number(h.amount).toLocaleString()}</td>
     <td style="color:var(--muted);font-size:12px">${h.date}</td>
     <td>${h.method}</td>
     <td><span class="badge ${planClass(h.plan)}">${h.plan}</span></td>
-  </tr>`).join('') || '<tr><td colspan="6" style="color:var(--muted);padding:20px">No payment records</td></tr>';
+  </tr>`).join('') || '<tr><td colspan="6" style="color:var(--muted);padding:20px;text-align:center">No payment records yet.</td></tr>';
 }
 
 function renderPlans() {
-  const planDefs = [
-    { name:'Basic', devices: 2, quality:'1080p' },
-    { name:'Standard', devices: 3, quality:'1080p' },
-    { name:'Premium', devices: 5, quality:'1080p' },
-  ];
+  const planDefs = [{name:'Basic',devices:2,quality:'1080p'},{name:'Standard',devices:3,quality:'1080p'},{name:'Premium',devices:5,quality:'1080p'}];
   document.getElementById('planTable').innerHTML = planDefs.map(p => {
     const subs = subscribers.filter(r => r[2] === p.name);
-    const rev = subs.reduce((s, r) => s + Number(r[6]), 0);
+    const rev = subs.reduce((s,r) => s+Number(r[6]),0);
     return `<tr>
       <td><span class="badge ${planClass(p.name)}">${p.name}</span></td>
-      <td>${p.devices} Devices</td>
-      <td>${p.quality}</td>
+      <td>${p.devices} Devices</td><td>${p.quality}</td>
       <td style="font-family:var(--mono)">${subs.length}</td>
       <td style="font-family:var(--mono)">₱${rev.toLocaleString()}</td>
     </tr>`;
   }).join('');
-
-  const maxSubs = Math.max(...planDefs.map(p => subscribers.filter(r => r[2] === p.name).length), 1);
-  const colors = { Basic: 'var(--info)', Standard: 'var(--purple)', Premium: 'var(--accent)' };
+  const maxSubs = Math.max(...planDefs.map(p => subscribers.filter(r => r[2]===p.name).length), 1);
+  const pColors = {Basic:'var(--info)',Standard:'var(--purple)',Premium:'var(--accent)'};
   document.getElementById('planDistBars').innerHTML = planDefs.map(p => {
-    const count = subscribers.filter(r => r[2] === p.name).length;
+    const count = subscribers.filter(r => r[2]===p.name).length;
     return `<div class="bar-row">
       <span class="bar-label">${p.name}</span>
-      <div class="bar-track"><div class="bar-fill" style="width:${(count/maxSubs*100).toFixed(1)}%;background:${colors[p.name]}"></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(count/maxSubs*100).toFixed(1)}%;background:${pColors[p.name]}"></div></div>
       <span class="bar-val">${count} subs</span>
     </div>`;
   }).join('');
 }
 
-// ── ACTIONS ───────────────────────────────────────────────────
+// ─────────────────────────────────────────────────
+// PAID CONFIRMATION
+// ─────────────────────────────────────────────────
+function openPaidConfirm(id) {
+  const sub = subscribers.find(s => s[0] === id);
+  if (!sub) return;
+  pendingPaidId = id;
+  const nextBilling = formatDate(addOneMonth(parseDate(sub[5])));
+  document.getElementById('cpName').textContent = sub[1];
+  document.getElementById('cpMeta').textContent = `Subscriber ID #${sub[0]}`;
+  document.getElementById('cpAmount').textContent = `₱${Number(sub[6]).toLocaleString()}`;
+  document.getElementById('cpPlan').textContent = sub[2];
+  document.getElementById('cpMethod').textContent = sub[9];
+  document.getElementById('cpNextDate').textContent = nextBilling;
+  document.getElementById('confirmPaidModal').classList.add('open');
+}
+
+function executePaid() {
+  const sub = subscribers.find(s => s[0] === pendingPaidId);
+  if (!sub) return;
+  sub[5] = formatDate(addOneMonth(parseDate(sub[5])));
+  sub[7] = 'Paid';
+  sub[8] = formatDate(today);
+  if (!sub[12]) sub[12] = [];
+  sub[12].push({ date: formatDate(today), amount: sub[6], method: sub[9] });
+  closeModal('confirmPaidModal');
+  persist();
+  renderAll();
+}
+
+// ─────────────────────────────────────────────────
+// CRUD
+// ─────────────────────────────────────────────────
 function addSubscriber() {
   const id = document.getElementById('fid').value.trim();
   const name = document.getElementById('fname').value.trim();
@@ -705,28 +745,18 @@ function addSubscriber() {
   const method = document.getElementById('fmethod').value;
   const access = document.getElementById('faccess').value;
   const notes = document.getElementById('fnotes').value.trim();
-  if (!id || !name || !amount || !dateVal) { alert('Please fill in ID, Name, Amount, and Start Date.'); return; }
+  if (!id||!name||!amount||!dateVal) { alert('Please fill in ID, Name, Amount, and Start Date.'); return; }
   const start = new Date(dateVal + 'T00:00:00');
-  const history = [{ date: formatDate(start), amount: Number(amount), method }];
-  subscribers.push([id, name, plan, formatDate(start), 'Monthly', formatDate(addOneMonth(start)), Number(amount), 'Paid', formatDate(start), method, access, notes, history]);
+  subscribers.push([id, name, plan, formatDate(start), 'Monthly', formatDate(addOneMonth(start)), Number(amount), 'Paid', formatDate(start), method, access, notes, [{date:formatDate(start),amount:Number(amount),method}]]);
   ['fid','fname','famount','fdate','fnotes'].forEach(i => document.getElementById(i).value = '');
-  renderAll();
-}
-
-function markPaid(id) {
-  const sub = subscribers.find(s => s[0] === id);
-  if (!sub) return;
-  sub[5] = formatDate(addOneMonth(parseDate(sub[5])));
-  sub[7] = 'Paid';
-  sub[8] = formatDate(today);
-  if (!sub[12]) sub[12] = [];
-  sub[12].push({ date: formatDate(today), amount: sub[6], method: sub[9] });
+  persist();
   renderAll();
 }
 
 function deleteSub(id) {
-  if (!confirm('Delete subscriber ' + id + '?')) return;
+  if (!confirm(`Delete subscriber ${id}?\nThis cannot be undone.`)) return;
   subscribers = subscribers.filter(s => s[0] !== id);
+  persist();
   renderAll();
 }
 
@@ -735,19 +765,17 @@ function showHistory(id) {
   if (!sub) return;
   document.getElementById('histModalTitle').textContent = `Payment History — ${sub[1]} (${sub[0]})`;
   const hist = sub[12] || [];
-  document.getElementById('histModalBody').innerHTML = hist.length === 0
+  document.getElementById('histModalBody').innerHTML = !hist.length
     ? '<p style="color:var(--muted)">No payment records yet.</p>'
     : hist.slice().reverse().map(h => `
-      <div class="hist-entry">
-        <div>
-          <div style="font-weight:600">${h.method}</div>
-          <div class="hist-date">${h.date}</div>
-        </div>
-        <span class="hist-amount">₱${Number(h.amount).toLocaleString()}</span>
-      </div>`).join('') + `<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
-        <span style="color:var(--muted)">Total Paid</span>
-        <span style="font-family:var(--mono);color:var(--accent2);font-weight:700">₱${hist.reduce((s,h)=>s+Number(h.amount),0).toLocaleString()}</span>
-      </div>`;
+        <div class="hist-entry">
+          <div><div style="font-weight:600">${h.method}</div><div class="hist-date">${h.date}</div></div>
+          <span class="hist-amount">₱${Number(h.amount).toLocaleString()}</span>
+        </div>`).join('')
+      + `<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+           <span style="color:var(--muted)">Total Paid</span>
+           <span style="font-family:var(--mono);color:var(--accent2);font-weight:700">₱${hist.reduce((s,h)=>s+Number(h.amount),0).toLocaleString()}</span>
+         </div>`;
   document.getElementById('histModal').classList.add('open');
 }
 
@@ -764,6 +792,7 @@ function saveNote() {
   const sub = subscribers.find(s => s[0] === currentNoteId);
   if (sub) { sub[11] = document.getElementById('noteTextarea').value.trim(); }
   closeModal('notesModal');
+  persist();
   renderAll();
 }
 
@@ -772,23 +801,29 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
 
+function promptReset() { document.getElementById('confirmResetModal').classList.add('open'); }
+function executeReset() {
+  subscribers = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  localStorage.removeItem(STORAGE_KEY);
+  closeModal('confirmResetModal');
+  renderAll();
+}
+
 function exportCSV() {
   const headers = ['ID','Name','Plan','Start Date','Billing','Next Payment','Amount Due','Payment Status','Last Payment','Method','Server Access','Days Until Due','Overdue?','Notes'];
   const rows = getFiltered().map(r => {
     const days = daysUntil(r[5]);
     return [r[0],r[1],r[2],r[3],r[4],r[5],r[6],days<=0?'Pending':'Paid',r[8],r[9],r[10],days,overdueLabel(days),r[11]||''];
   });
-  const csv = [headers,...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+  const csv = [headers,...rows].map(r => r.map(c=>`"${c}"`).join(',')).join('\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download = 'jellyfin_tracker.csv';
   a.click();
 }
 
-function resetData() { if (confirm('Reset all data to defaults?')) location.reload(); }
-
 ['searchInput','statusFilter','accessFilter','planFilter'].forEach(id => {
-  document.getElementById(id).addEventListener(id === 'searchInput' ? 'input' : 'change', renderAll);
+  document.getElementById(id).addEventListener(id==='searchInput'?'input':'change', renderAll);
 });
 </script>
 </body>
