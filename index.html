@@ -404,12 +404,35 @@
       <div class="confirm-sub-meta" id="cpMeta"></div>
       <div class="confirm-amount-box">
         <div class="confirm-amount-label">Payment Amount</div>
-        <div class="confirm-amount-value" id="cpAmount"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:2px">
+          <span style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent2)">₱</span>
+          <input id="cpAmountInput" type="number" min="1"
+            style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent2);
+                   background:transparent;border:none;border-bottom:2px solid rgba(66,245,167,.4);
+                   outline:none;width:140px;text-align:center;padding:2px 0;"
+            oninput="this.style.borderBottomColor='rgba(66,245,167,.8)'" />
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">✏️ Edit if amount changed</div>
       </div>
       <div class="confirm-details">
-        <div class="confirm-detail-row"><span>Plan</span><span id="cpPlan"></span></div>
+        <div class="confirm-detail-row">
+          <span>Plan</span>
+          <span>
+            <select id="cpPlanSelect"
+              style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;
+                     color:var(--text);font-size:13px;font-family:var(--sans);padding:4px 8px;
+                     outline:none;cursor:pointer;" onchange="cpUpdateNextDate()">
+              <option value="Basic">Basic</option>
+              <option value="Standard">Standard</option>
+              <option value="Premium">Premium</option>
+            </select>
+          </span>
+        </div>
         <div class="confirm-detail-row"><span>Payment Method</span><span id="cpMethod"></span></div>
         <div class="confirm-detail-row"><span>Next billing after</span><span id="cpNextDate" style="font-family:var(--mono);font-size:12px;color:var(--accent)"></span></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);text-align:left;margin-bottom:16px;line-height:1.5;padding:8px 10px;background:rgba(200,245,66,.05);border-radius:8px;border:1px solid rgba(200,245,66,.1)">
+        💡 Change plan or amount if the subscriber upgraded/downgraded
       </div>
       <div class="confirm-btns">
         <button class="btn" onclick="closeModal('confirmPaidModal')">Cancel</button>
@@ -480,7 +503,7 @@ function persist() {
 const CREDENTIALS = { username: 'rrpsabino', password: 'Bradpi++77' };
 let currentNoteId = null;
 let pendingPaidId = null;
-const today = new Date('2026-05-07T00:00:00');
+const _now = new Date(); const today = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate());
 
 function doLogin() {
   const u = document.getElementById('loginUser').value.trim();
@@ -521,7 +544,7 @@ let subscribers = loadSubscribers();
 
 function parseDate(v) { return new Date(v.replace(',', '')); }
 function formatDate(d) { return d.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }); }
-function daysUntil(text) { return Math.ceil((parseDate(text) - today) / 86400000); }
+function daysUntil(text) { return Math.floor((parseDate(text) - today) / 86400000); }
 function overdueLabel(days) { return days <= 1 ? 'DUE SOON' : 'OK'; }
 function addOneMonth(d) { const n = new Date(d); n.setMonth(n.getMonth() + 1); return n; }
 function planClass(p) { return p === 'Basic' ? 'basic' : p === 'Standard' ? 'standard' : 'premium'; }
@@ -710,24 +733,39 @@ function openPaidConfirm(id) {
   const sub = subscribers.find(s => s[0] === id);
   if (!sub) return;
   pendingPaidId = id;
-  const nextBilling = formatDate(addOneMonth(parseDate(sub[5])));
   document.getElementById('cpName').textContent = sub[1];
   document.getElementById('cpMeta').textContent = `Subscriber ID #${sub[0]}`;
-  document.getElementById('cpAmount').textContent = `₱${Number(sub[6]).toLocaleString()}`;
-  document.getElementById('cpPlan').textContent = sub[2];
+  // editable amount — pre-fill with current amount
+  document.getElementById('cpAmountInput').value = sub[6];
+  document.getElementById('cpAmountInput').style.borderBottomColor = 'rgba(66,245,167,.4)';
+  // editable plan — pre-select current plan
+  const planSel = document.getElementById('cpPlanSelect');
+  planSel.value = sub[2];
   document.getElementById('cpMethod').textContent = sub[9];
-  document.getElementById('cpNextDate').textContent = nextBilling;
+  document.getElementById('cpNextDate').textContent = formatDate(addOneMonth(parseDate(sub[5])));
   document.getElementById('confirmPaidModal').classList.add('open');
+}
+
+function cpUpdateNextDate() {
+  // recalculate next date display when plan changes (purely cosmetic — date stays same)
+  // just keep current next date display unchanged; plan change is saved on confirm
 }
 
 function executePaid() {
   const sub = subscribers.find(s => s[0] === pendingPaidId);
   if (!sub) return;
+  const newAmount = Number(document.getElementById('cpAmountInput').value);
+  const newPlan   = document.getElementById('cpPlanSelect').value;
+  if (!newAmount || newAmount <= 0) { alert('Please enter a valid amount.'); return; }
+  // apply plan & amount change
+  sub[2] = newPlan;
+  sub[6] = newAmount;
+  // advance next payment date by one month from current next payment
   sub[5] = formatDate(addOneMonth(parseDate(sub[5])));
   sub[7] = 'Paid';
   sub[8] = formatDate(today);
   if (!sub[12]) sub[12] = [];
-  sub[12].push({ date: formatDate(today), amount: sub[6], method: sub[9] });
+  sub[12].push({ date: formatDate(today), amount: newAmount, method: sub[9], plan: newPlan });
   closeModal('confirmPaidModal');
   persist();
   renderAll();
@@ -769,7 +807,10 @@ function showHistory(id) {
     ? '<p style="color:var(--muted)">No payment records yet.</p>'
     : hist.slice().reverse().map(h => `
         <div class="hist-entry">
-          <div><div style="font-weight:600">${h.method}</div><div class="hist-date">${h.date}</div></div>
+          <div>
+            <div style="font-weight:600">${h.method}${h.plan ? ` <span style="font-size:10px;opacity:.7">· ${h.plan}</span>` : ''}</div>
+            <div class="hist-date">${h.date}</div>
+          </div>
           <span class="hist-amount">₱${Number(h.amount).toLocaleString()}</span>
         </div>`).join('')
       + `<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
