@@ -188,6 +188,70 @@
     .note-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--text); font-family: var(--sans); resize: vertical; min-height: 90px; outline: none; }
     .note-input:focus { border-color: var(--accent); }
 
+    /* ── PROFILE CARD MODAL ── */
+    .profile-modal { max-width: 420px; }
+    .profile-card {
+      background: var(--surface); border-radius: 16px; overflow: hidden;
+    }
+    .profile-card-header {
+      background: linear-gradient(135deg, #1a2a0a 0%, #0d1a1a 100%);
+      padding: 28px 24px 20px; position: relative; border-bottom: 1px solid var(--border);
+    }
+    .profile-card-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,245,66,.08) 0%, transparent 70%);
+    }
+    .profile-avatar {
+      width: 56px; height: 56px; background: var(--accent); border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-weight: 700; color: #0d0f14; font-size: 22px;
+      margin-bottom: 12px; position: relative; z-index: 1;
+      box-shadow: 0 4px 20px rgba(200,245,66,.3);
+    }
+    .profile-name { font-size: 22px; font-weight: 700; position: relative; z-index: 1; margin-bottom: 4px; }
+    .profile-id { font-family: var(--mono); font-size: 12px; color: var(--muted); position: relative; z-index: 1; }
+    .profile-status-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; position: relative; z-index: 1; }
+    .profile-card-body { padding: 20px 24px; }
+    .profile-section-title {
+      font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase;
+      letter-spacing: .1em; margin-bottom: 10px; margin-top: 16px;
+    }
+    .profile-section-title:first-child { margin-top: 0; }
+    .profile-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid rgba(42,47,66,.5); font-size: 13px;
+    }
+    .profile-row:last-child { border-bottom: none; }
+    .profile-row .lbl { color: var(--muted); }
+    .profile-row .val { font-weight: 600; text-align: right; }
+    .profile-row .val.mono { font-family: var(--mono); }
+    .profile-row .val.accent2 { color: var(--accent2); font-family: var(--mono); }
+    .profile-row .val.warn { color: var(--warn); font-family: var(--mono); }
+    .profile-row .val.danger { color: var(--danger); font-family: var(--mono); }
+    .profile-notes-box {
+      background: var(--surface2); border-radius: 8px; padding: 10px 12px;
+      font-size: 13px; color: var(--muted); line-height: 1.5; min-height: 38px;
+      border: 1px solid var(--border);
+    }
+    .profile-footer {
+      padding: 14px 24px; border-top: 1px solid var(--border);
+      display: flex; gap: 8px; background: rgba(0,0,0,.15);
+    }
+    .profile-footer .btn { flex: 1; justify-content: center; font-size: 13px; }
+    .name-link {
+      cursor: pointer; color: var(--text); font-weight: 600;
+      border-bottom: 1px dashed rgba(200,245,66,.3); transition: color .15s, border-color .15s;
+    }
+    .name-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* hide non-essential chrome when printing/screenshotting the card */
+    @media print {
+      body * { visibility: hidden; }
+      #profileModal, #profileModal * { visibility: visible; }
+      #profileModal { position: fixed; inset: 0; display: flex !important; align-items: center; justify-content: center; background: #000 !important; }
+      .profile-footer { display: none; }
+    }
+
     @media (max-width: 900px) {
       .stats { grid-template-columns: repeat(2, 1fr); }
       .content { padding: 14px; }
@@ -442,6 +506,48 @@
   </div>
 </div>
 
+<!-- ── SUBSCRIBER PROFILE MODAL ── -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal profile-modal">
+    <div class="profile-card" id="profileCardSnap">
+      <div class="profile-card-header">
+        <div class="profile-avatar" id="profAvatar"></div>
+        <div class="profile-name" id="profName"></div>
+        <div class="profile-id" id="profId"></div>
+        <div class="profile-status-row">
+          <span id="profAccessBadge"></span>
+          <span id="profPlanBadge"></span>
+          <span id="profStatusBadge"></span>
+        </div>
+      </div>
+      <div class="profile-card-body">
+        <div class="profile-section-title">📅 Subscription Details</div>
+        <div class="profile-row"><span class="lbl">Start Date</span><span class="val" id="profStart"></span></div>
+        <div class="profile-row"><span class="lbl">Billing Cycle</span><span class="val" id="profBilling"></span></div>
+        <div class="profile-row"><span class="lbl">Next Payment</span><span class="val" id="profNext"></span></div>
+        <div class="profile-row"><span class="lbl">Days Until Due</span><span class="val mono" id="profDays"></span></div>
+
+        <div class="profile-section-title">💳 Payment Info</div>
+        <div class="profile-row"><span class="lbl">Amount Due</span><span class="val accent2" id="profAmount"></span></div>
+        <div class="profile-row"><span class="lbl">Last Payment</span><span class="val" id="profLastPay"></span></div>
+        <div class="profile-row"><span class="lbl">Payment Method</span><span class="val" id="profMethod"></span></div>
+        <div class="profile-row"><span class="lbl">Total Paid (all-time)</span><span class="val accent2" id="profTotal"></span></div>
+
+        <div class="profile-section-title" id="profNotesTitle">📝 Notes</div>
+        <div class="profile-notes-box" id="profNotes"></div>
+
+        <div style="margin-top:14px;font-size:10px;color:rgba(123,130,160,.5);text-align:center;font-family:var(--mono)">
+          Jellyfin Advanced Tracker · Generated <span id="profGenDate"></span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-footer">
+      <button class="btn" onclick="closeModal('profileModal')">✕ Close</button>
+      <button class="btn accent" onclick="printProfile()">📸 Screenshot / Print</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── CONFIRM RESET MODAL ── -->
 <div class="modal-overlay" id="confirmResetModal">
   <div class="modal confirm-modal">
@@ -626,7 +732,7 @@ function renderSubscriberTable() {
     const days = daysUntil(row[5]); const ol = overdueLabel(days); const isActive = row[10] === 'Active';
     return `<tr>
       <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${row[0]}</td>
-      <td class="name-cell">${row[1]}</td>
+      <td class="name-cell"><span class="name-link" onclick="showProfile('${row[0]}')">${row[1]}</span></td>
       <td><span class="badge ${planClass(row[2])}">${row[2]}</span></td>
       <td style="color:var(--muted);font-size:12px">${row[3]}</td>
       <td style="color:var(--muted);font-size:12px">${row[4]}</td>
@@ -835,6 +941,56 @@ function saveNote() {
   closeModal('notesModal');
   persist();
   renderAll();
+}
+
+function showProfile(id) {
+  const sub = subscribers.find(s => s[0] === id);
+  if (!sub) return;
+  const days = daysUntil(sub[5]);
+  const isActive = sub[10] === 'Active';
+  const hist = sub[12] || [];
+  const totalPaid = hist.reduce((s, h) => s + Number(h.amount), 0);
+  const payStatus = days <= 0 ? 'Pending' : 'Paid';
+
+  // Avatar: first letter of name
+  document.getElementById('profAvatar').textContent = sub[1].charAt(0).toUpperCase();
+
+  document.getElementById('profName').textContent = sub[1];
+  document.getElementById('profId').textContent = `Subscriber ID #${sub[0]}`;
+
+  // Status badges
+  document.getElementById('profAccessBadge').innerHTML = `<span class="badge ${isActive ? 'active' : 'inactive'}">${sub[10]}</span>`;
+  document.getElementById('profPlanBadge').innerHTML = `<span class="badge ${planClass(sub[2])}">${sub[2]}</span>`;
+  document.getElementById('profStatusBadge').innerHTML = `<span class="badge ${payStatus === 'Pending' ? 'pending' : 'paid'}">${payStatus}</span>`;
+
+  // Subscription details
+  document.getElementById('profStart').textContent = sub[3];
+  document.getElementById('profBilling').textContent = sub[4];
+  document.getElementById('profNext').textContent = sub[5];
+
+  const daysEl = document.getElementById('profDays');
+  daysEl.textContent = days + (days === 1 ? ' day' : ' days');
+  daysEl.className = 'val mono ' + (days < 0 ? 'danger' : days <= 1 ? 'warn' : '');
+
+  // Payment info
+  document.getElementById('profAmount').textContent = `₱${Number(sub[6]).toLocaleString()}`;
+  document.getElementById('profLastPay').textContent = sub[8];
+  document.getElementById('profMethod').textContent = sub[9];
+  document.getElementById('profTotal').textContent = `₱${totalPaid.toLocaleString()}`;
+
+  // Notes
+  const notesEl = document.getElementById('profNotes');
+  notesEl.textContent = sub[11] || 'No notes added.';
+  notesEl.style.color = sub[11] ? 'var(--text)' : 'var(--muted)';
+
+  // Generated timestamp
+  document.getElementById('profGenDate').textContent = formatDate(today);
+
+  document.getElementById('profileModal').classList.add('open');
+}
+
+function printProfile() {
+  window.print();
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
