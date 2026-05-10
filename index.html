@@ -61,8 +61,22 @@
     .btn.accent:hover { opacity: .9; }
     .btn.danger-btn { background: rgba(255,77,109,.15); color: var(--danger); border-color: rgba(255,77,109,.3); }
     .btn.danger-btn:hover { background: rgba(255,77,109,.25); border-color: var(--danger); }
+    .btn.import-btn { background: rgba(96,165,250,.12); color: var(--info); border-color: rgba(96,165,250,.3); }
+    .btn.import-btn:hover { background: rgba(96,165,250,.22); border-color: var(--info); }
+    .btn.export-btn { background: rgba(66,245,167,.12); color: var(--accent2); border-color: rgba(66,245,167,.3); }
+    .btn.export-btn:hover { background: rgba(66,245,167,.22); border-color: var(--accent2); }
     .logout-btn { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px; font-size: 13px; color: var(--muted); cursor: pointer; font-family: var(--sans); transition: color .2s, border-color .2s; }
     .logout-btn:hover { color: var(--danger); border-color: var(--danger); }
+
+    /* ── DATA BANNER ── */
+    #dataBanner {
+      background: rgba(255,209,102,.07); border: 1px solid rgba(255,209,102,.25);
+      border-radius: 10px; padding: 10px 16px; margin: 12px 28px 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      font-size: 13px; color: var(--warn);
+    }
+    #dataBanner .banner-left { display: flex; align-items: center; gap: 8px; }
+    #dataBanner .banner-actions { display: flex; gap: 8px; }
 
     /* ── SAVE TOAST ── */
     #saveToast {
@@ -190,37 +204,17 @@
 
     /* ── PROFILE CARD MODAL ── */
     .profile-modal { max-width: 420px; }
-    .profile-card {
-      background: var(--surface); border-radius: 16px; overflow: hidden;
-    }
-    .profile-card-header {
-      background: linear-gradient(135deg, #1a2a0a 0%, #0d1a1a 100%);
-      padding: 28px 24px 20px; position: relative; border-bottom: 1px solid var(--border);
-    }
-    .profile-card-header::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,245,66,.08) 0%, transparent 70%);
-    }
-    .profile-avatar {
-      width: 56px; height: 56px; background: var(--accent); border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-weight: 700; color: #0d0f14; font-size: 22px;
-      margin-bottom: 12px; position: relative; z-index: 1;
-      box-shadow: 0 4px 20px rgba(200,245,66,.3);
-    }
+    .profile-card { background: var(--surface); border-radius: 16px; overflow: hidden; }
+    .profile-card-header { background: linear-gradient(135deg, #1a2a0a 0%, #0d1a1a 100%); padding: 28px 24px 20px; position: relative; border-bottom: 1px solid var(--border); }
+    .profile-card-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,245,66,.08) 0%, transparent 70%); }
+    .profile-avatar { width: 56px; height: 56px; background: var(--accent); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; color: #0d0f14; font-size: 22px; margin-bottom: 12px; position: relative; z-index: 1; box-shadow: 0 4px 20px rgba(200,245,66,.3); }
     .profile-name { font-size: 22px; font-weight: 700; position: relative; z-index: 1; margin-bottom: 4px; }
     .profile-id { font-family: var(--mono); font-size: 12px; color: var(--muted); position: relative; z-index: 1; }
     .profile-status-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; position: relative; z-index: 1; }
     .profile-card-body { padding: 20px 24px; }
-    .profile-section-title {
-      font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase;
-      letter-spacing: .1em; margin-bottom: 10px; margin-top: 16px;
-    }
+    .profile-section-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; margin-top: 16px; }
     .profile-section-title:first-child { margin-top: 0; }
-    .profile-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 8px 0; border-bottom: 1px solid rgba(42,47,66,.5); font-size: 13px;
-    }
+    .profile-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(42,47,66,.5); font-size: 13px; }
     .profile-row:last-child { border-bottom: none; }
     .profile-row .lbl { color: var(--muted); }
     .profile-row .val { font-weight: 600; text-align: right; }
@@ -228,23 +222,21 @@
     .profile-row .val.accent2 { color: var(--accent2); font-family: var(--mono); }
     .profile-row .val.warn { color: var(--warn); font-family: var(--mono); }
     .profile-row .val.danger { color: var(--danger); font-family: var(--mono); }
-    .profile-notes-box {
-      background: var(--surface2); border-radius: 8px; padding: 10px 12px;
-      font-size: 13px; color: var(--muted); line-height: 1.5; min-height: 38px;
-      border: 1px solid var(--border);
-    }
-    .profile-footer {
-      padding: 14px 24px; border-top: 1px solid var(--border);
-      display: flex; gap: 8px; background: rgba(0,0,0,.15);
-    }
+    .profile-notes-box { background: var(--surface2); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--muted); line-height: 1.5; min-height: 38px; border: 1px solid var(--border); }
+    .profile-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: rgba(0,0,0,.15); }
     .profile-footer .btn { flex: 1; justify-content: center; font-size: 13px; }
-    .name-link {
-      cursor: pointer; color: var(--text); font-weight: 600;
-      border-bottom: 1px dashed rgba(200,245,66,.3); transition: color .15s, border-color .15s;
-    }
+    .name-link { cursor: pointer; color: var(--text); font-weight: 600; border-bottom: 1px dashed rgba(200,245,66,.3); transition: color .15s, border-color .15s; }
     .name-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
-    /* hide non-essential chrome when printing/screenshotting the card */
+    /* ── IMPORT/EXPORT INFO BOX ── */
+    .data-info-box {
+      background: rgba(96,165,250,.06); border: 1px solid rgba(96,165,250,.2);
+      border-radius: 12px; padding: 16px 18px; margin-bottom: 18px;
+    }
+    .data-info-box h3 { font-family: var(--mono); font-size: 13px; color: var(--info); margin-bottom: 8px; }
+    .data-info-box p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+    .data-info-box .info-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
     @media print {
       body * { visibility: hidden; }
       #profileModal, #profileModal * { visibility: visible; }
@@ -257,6 +249,7 @@
       .content { padding: 14px; }
       .topbar { padding: 12px 14px; }
       .rev-grid { grid-template-columns: 1fr; }
+      #dataBanner { margin: 8px 14px 0; }
     }
     @media (max-width: 560px) { .stats { grid-template-columns: 1fr 1fr; } }
   </style>
@@ -265,6 +258,9 @@
 
 <!-- ── SAVE TOAST ── -->
 <div id="saveToast">✓ Data saved</div>
+
+<!-- Hidden file input for import -->
+<input type="file" id="importFileInput" accept=".json" style="display:none" onchange="handleImportFile(event)" />
 
 <!-- ── LOGIN ── -->
 <div id="loginScreen">
@@ -313,10 +309,24 @@
         <option value="Standard">Standard</option>
         <option value="Premium">Premium</option>
       </select>
+      <button class="btn export-btn" onclick="exportJSON()" title="Export all data as JSON backup">↓ Backup JSON</button>
+      <button class="btn import-btn" onclick="document.getElementById('importFileInput').click()" title="Import JSON backup file">↑ Import JSON</button>
       <button class="btn" onclick="exportCSV()">↓ CSV</button>
       <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
   </header>
+
+  <!-- Data persistence banner -->
+  <div id="dataBanner">
+    <div class="banner-left">
+      <span>💾</span>
+      <span><strong>Data tip:</strong> Browser storage clears when you clear cache. Export a JSON backup regularly to keep your data safe.</span>
+    </div>
+    <div class="banner-actions">
+      <button class="btn export-btn" style="padding:5px 10px;font-size:12px" onclick="exportJSON()">↓ Backup Now</button>
+      <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1" onclick="document.getElementById('dataBanner').style.display='none'" title="Dismiss">×</button>
+    </div>
+  </div>
 
   <div class="content">
     <div class="tab-nav">
@@ -324,6 +334,7 @@
       <button class="tab-btn" data-tab="subscribers" onclick="switchTab('subscribers',this)">👥 Subscribers</button>
       <button class="tab-btn" data-tab="revenue" onclick="switchTab('revenue',this)">💰 Revenue</button>
       <button class="tab-btn" data-tab="plans" onclick="switchTab('plans',this)">📋 Plans</button>
+      <button class="tab-btn" data-tab="backup" onclick="switchTab('backup',this)">🗄️ Backup & Restore</button>
     </div>
 
     <!-- ══ DASHBOARD ══ -->
@@ -428,6 +439,44 @@
         <div style="padding:20px" id="planDistBars"></div>
       </div>
     </div>
+
+    <!-- ══ BACKUP & RESTORE ══ -->
+    <div id="tab-backup" class="tab-pane">
+      <div class="data-info-box">
+        <h3>⚠️ Important: Your data lives in this browser</h3>
+        <p>
+          This tracker stores data in your browser's <strong>localStorage</strong>. 
+          If you clear your browser cache, history, or site data — or open the app in a different browser/device — your subscriber data will be gone.<br><br>
+          <strong>Solution:</strong> Regularly export a <strong>JSON backup</strong> file and save it somewhere safe (Google Drive, USB, etc). 
+          When you need to restore, just import that file back.
+        </p>
+        <div class="info-actions">
+          <button class="btn export-btn" onclick="exportJSON()">↓ Export Backup (JSON)</button>
+          <button class="btn import-btn" onclick="document.getElementById('importFileInput').click()">↑ Import Backup (JSON)</button>
+          <button class="btn" onclick="exportCSV()">↓ Export as CSV</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div><h2>How to Back Up Your Data</h2><p>Step-by-step guide</p></div>
+        </div>
+        <div style="padding:20px;font-size:13px;line-height:2;color:var(--muted)">
+          <div style="margin-bottom:12px"><span style="color:var(--accent);font-family:var(--mono);font-weight:700">STEP 1</span> — Click <strong style="color:var(--text)">↓ Export Backup (JSON)</strong> above. A file named <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:11px">jellyfin_backup_YYYY-MM-DD.json</code> will download.</div>
+          <div style="margin-bottom:12px"><span style="color:var(--accent);font-family:var(--mono);font-weight:700">STEP 2</span> — Save this file to <strong style="color:var(--text)">Google Drive, Dropbox, or a USB drive</strong>. Do this regularly.</div>
+          <div style="margin-bottom:12px"><span style="color:var(--accent2);font-family:var(--mono);font-weight:700">RESTORE</span> — To restore: click <strong style="color:var(--text)">↑ Import Backup (JSON)</strong>, select your saved file, and all your data comes back instantly.</div>
+          <div style="padding:12px;background:rgba(255,77,109,.07);border:1px solid rgba(255,77,109,.2);border-radius:8px;color:var(--danger)">
+            ⚠️ <strong>Importing will replace all current data.</strong> Export first if you want to keep what you have.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><div><h2>Storage Status</h2><p id="storageStatusLabel">Checking…</p></div></div>
+        <div style="padding:16px 20px" id="storageStatusBody"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -526,16 +575,13 @@
         <div class="profile-row"><span class="lbl">Billing Cycle</span><span class="val" id="profBilling"></span></div>
         <div class="profile-row"><span class="lbl">Next Payment</span><span class="val" id="profNext"></span></div>
         <div class="profile-row"><span class="lbl">Days Until Due</span><span class="val mono" id="profDays"></span></div>
-
         <div class="profile-section-title">💳 Payment Info</div>
         <div class="profile-row"><span class="lbl">Amount Due</span><span class="val accent2" id="profAmount"></span></div>
         <div class="profile-row"><span class="lbl">Last Payment</span><span class="val" id="profLastPay"></span></div>
         <div class="profile-row"><span class="lbl">Payment Method</span><span class="val" id="profMethod"></span></div>
         <div class="profile-row"><span class="lbl">Total Paid (all-time)</span><span class="val accent2" id="profTotal"></span></div>
-
         <div class="profile-section-title" id="profNotesTitle">📝 Notes</div>
         <div class="profile-notes-box" id="profNotes"></div>
-
         <div style="margin-top:14px;font-size:10px;color:rgba(123,130,160,.5);text-align:center;font-family:var(--mono)">
           Jellyfin Advanced Tracker · Generated <span id="profGenDate"></span>
         </div>
@@ -558,6 +604,26 @@
       <div class="confirm-btns" style="margin-top:28px">
         <button class="btn" onclick="closeModal('confirmResetModal')">Cancel</button>
         <button class="btn danger-btn" onclick="executeReset()">Yes, Reset Everything</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── IMPORT CONFIRM MODAL ── -->
+<div class="modal-overlay" id="confirmImportModal">
+  <div class="modal confirm-modal">
+    <div class="confirm-body">
+      <div class="confirm-emoji">📥</div>
+      <div class="confirm-sub-name">Import Backup?</div>
+      <div class="confirm-sub-meta" style="margin-top:8px;line-height:1.6" id="importConfirmMeta">
+        This will replace all current data with the imported backup.
+      </div>
+      <div style="background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);border-radius:8px;padding:12px;margin:16px 0;font-size:13px;color:var(--warn)">
+        ⚠️ Your current data will be overwritten. Export a backup first if needed.
+      </div>
+      <div class="confirm-btns">
+        <button class="btn" onclick="cancelImport()">Cancel</button>
+        <button class="btn import-btn" onclick="executeImport()">✓ Yes, Import Data</button>
       </div>
     </div>
   </div>
@@ -593,14 +659,23 @@ function loadSubscribers() {
 }
 
 let _toastTimer = null;
+function showToast(msg, color) {
+  const toast = document.getElementById('saveToast');
+  toast.textContent = msg || '✓ Data saved';
+  toast.style.color = color || 'var(--accent)';
+  toast.style.borderColor = color ? color.replace('var(--','rgba(').replace(')',', 0.4)') : 'rgba(200,245,66,.4)';
+  toast.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
 function persist() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(subscribers));
-    const toast = document.getElementById('saveToast');
-    toast.classList.add('show');
-    clearTimeout(_toastTimer);
-    _toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
-  } catch(e) {}
+    showToast('✓ Data saved');
+  } catch(e) {
+    showToast('⚠ Save failed — storage full?', 'var(--danger)');
+  }
 }
 
 // ─────────────────────────────────────────────────
@@ -618,6 +693,7 @@ function doLogin() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     renderAll();
+    renderStorageStatus();
   } else {
     document.getElementById('loginError').style.display = 'block';
   }
@@ -641,6 +717,7 @@ function switchTab(name, btn) {
   document.getElementById('tab-' + name).classList.add('active');
   (btn || document.querySelector(`[data-tab="${name}"]`)).classList.add('active');
   renderAll();
+  if (name === 'backup') renderStorageStatus();
 }
 
 // ─────────────────────────────────────────────────
@@ -667,6 +744,116 @@ function getFiltered() {
       (af === 'all' || r[10] === af) &&
       (pf === 'all' || r[2] === pf);
   });
+}
+
+// ─────────────────────────────────────────────────
+// EXPORT / IMPORT JSON
+// ─────────────────────────────────────────────────
+function exportJSON() {
+  const payload = {
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    exportedBy: 'Jellyfin Advanced Tracker',
+    subscriberCount: subscribers.length,
+    subscribers: subscribers
+  };
+  const json = JSON.stringify(payload, null, 2);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+  a.download = `jellyfin_backup_${dateStr}.json`;
+  a.click();
+  showToast('✓ Backup exported!', 'var(--accent2)');
+}
+
+let _pendingImportData = null;
+
+function handleImportFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  // reset so same file can be re-imported
+  event.target.value = '';
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      // Support both raw array and our wrapper format
+      let data;
+      if (Array.isArray(parsed)) {
+        data = parsed;
+      } else if (parsed.subscribers && Array.isArray(parsed.subscribers)) {
+        data = parsed.subscribers;
+      } else {
+        throw new Error('Unrecognized format');
+      }
+      if (!data.length) throw new Error('No subscribers found in file');
+      _pendingImportData = data;
+      const exportDate = parsed.exportedAt ? new Date(parsed.exportedAt).toLocaleString() : 'unknown date';
+      document.getElementById('importConfirmMeta').innerHTML =
+        `Found <strong style="color:var(--accent)">${data.length} subscribers</strong> in backup from <strong>${exportDate}</strong>.<br><br>This will replace your current <strong>${subscribers.length} records</strong>.`;
+      document.getElementById('confirmImportModal').classList.add('open');
+    } catch(err) {
+      alert('❌ Could not read backup file.\n\nMake sure you selected a valid Jellyfin Tracker JSON backup.\n\nError: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function cancelImport() {
+  _pendingImportData = null;
+  closeModal('confirmImportModal');
+}
+
+function executeImport() {
+  if (!_pendingImportData) return;
+  subscribers = _pendingImportData;
+  _pendingImportData = null;
+  persist();
+  closeModal('confirmImportModal');
+  renderAll();
+  renderStorageStatus();
+  showToast('✓ Data imported successfully!', 'var(--info)');
+}
+
+// ─────────────────────────────────────────────────
+// STORAGE STATUS
+// ─────────────────────────────────────────────────
+function renderStorageStatus() {
+  const json = localStorage.getItem(STORAGE_KEY) || '';
+  const bytes = new Blob([json]).size;
+  const kb = (bytes / 1024).toFixed(1);
+  const hasData = !!json;
+  const lastSave = hasData ? 'Session active' : 'No saved data';
+
+  document.getElementById('storageStatusLabel').textContent = hasData
+    ? `localStorage active · ${subscribers.length} subscribers · ${kb} KB used`
+    : 'No data in localStorage';
+
+  document.getElementById('storageStatusBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Subscribers Stored</div>
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent)">${subscribers.length}</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Storage Used</div>
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent2)">${kb} KB</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Total Payments Logged</div>
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--purple)">${subscribers.reduce((s,r)=>s+(r[12]||[]).length,0)}</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Storage Type</div>
+        <div style="font-size:14px;font-weight:700;color:var(--warn)">Browser localStorage</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Clears with browser data</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.15);border-radius:8px;font-size:12px;color:var(--muted);line-height:1.6">
+      💡 <strong style="color:var(--info)">Recommendation:</strong> Export a JSON backup after every session or whenever you add/update subscribers. 
+      Store it in Google Drive or another cloud service so you can restore it from any device.
+    </div>
+  `;
 }
 
 // ─────────────────────────────────────────────────
@@ -841,10 +1028,8 @@ function openPaidConfirm(id) {
   pendingPaidId = id;
   document.getElementById('cpName').textContent = sub[1];
   document.getElementById('cpMeta').textContent = `Subscriber ID #${sub[0]}`;
-  // editable amount — pre-fill with current amount
   document.getElementById('cpAmountInput').value = sub[6];
   document.getElementById('cpAmountInput').style.borderBottomColor = 'rgba(66,245,167,.4)';
-  // editable plan — pre-select current plan
   const planSel = document.getElementById('cpPlanSelect');
   planSel.value = sub[2];
   document.getElementById('cpMethod').textContent = sub[9];
@@ -852,10 +1037,7 @@ function openPaidConfirm(id) {
   document.getElementById('confirmPaidModal').classList.add('open');
 }
 
-function cpUpdateNextDate() {
-  // recalculate next date display when plan changes (purely cosmetic — date stays same)
-  // just keep current next date display unchanged; plan change is saved on confirm
-}
+function cpUpdateNextDate() {}
 
 function executePaid() {
   const sub = subscribers.find(s => s[0] === pendingPaidId);
@@ -863,10 +1045,8 @@ function executePaid() {
   const newAmount = Number(document.getElementById('cpAmountInput').value);
   const newPlan   = document.getElementById('cpPlanSelect').value;
   if (!newAmount || newAmount <= 0) { alert('Please enter a valid amount.'); return; }
-  // apply plan & amount change
   sub[2] = newPlan;
   sub[6] = newAmount;
-  // advance next payment date by one month from current next payment
   sub[5] = formatDate(addOneMonth(parseDate(sub[5])));
   sub[7] = 'Paid';
   sub[8] = formatDate(today);
@@ -952,18 +1132,12 @@ function showProfile(id) {
   const totalPaid = hist.reduce((s, h) => s + Number(h.amount), 0);
   const payStatus = days <= 0 ? 'Pending' : 'Paid';
 
-  // Avatar: first letter of name
   document.getElementById('profAvatar').textContent = sub[1].charAt(0).toUpperCase();
-
   document.getElementById('profName').textContent = sub[1];
   document.getElementById('profId').textContent = `Subscriber ID #${sub[0]}`;
-
-  // Status badges
   document.getElementById('profAccessBadge').innerHTML = `<span class="badge ${isActive ? 'active' : 'inactive'}">${sub[10]}</span>`;
   document.getElementById('profPlanBadge').innerHTML = `<span class="badge ${planClass(sub[2])}">${sub[2]}</span>`;
   document.getElementById('profStatusBadge').innerHTML = `<span class="badge ${payStatus === 'Pending' ? 'pending' : 'paid'}">${payStatus}</span>`;
-
-  // Subscription details
   document.getElementById('profStart').textContent = sub[3];
   document.getElementById('profBilling').textContent = sub[4];
   document.getElementById('profNext').textContent = sub[5];
@@ -972,26 +1146,19 @@ function showProfile(id) {
   daysEl.textContent = days + (days === 1 ? ' day' : ' days');
   daysEl.className = 'val mono ' + (days < 0 ? 'danger' : days <= 1 ? 'warn' : '');
 
-  // Payment info
   document.getElementById('profAmount').textContent = `₱${Number(sub[6]).toLocaleString()}`;
   document.getElementById('profLastPay').textContent = sub[8];
   document.getElementById('profMethod').textContent = sub[9];
   document.getElementById('profTotal').textContent = `₱${totalPaid.toLocaleString()}`;
 
-  // Notes
   const notesEl = document.getElementById('profNotes');
   notesEl.textContent = sub[11] || 'No notes added.';
   notesEl.style.color = sub[11] ? 'var(--text)' : 'var(--muted)';
-
-  // Generated timestamp
   document.getElementById('profGenDate').textContent = formatDate(today);
-
   document.getElementById('profileModal').classList.add('open');
 }
 
-function printProfile() {
-  window.print();
-}
+function printProfile() { window.print(); }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-overlay').forEach(m => {
@@ -1004,6 +1171,7 @@ function executeReset() {
   localStorage.removeItem(STORAGE_KEY);
   closeModal('confirmResetModal');
   renderAll();
+  renderStorageStatus();
 }
 
 function exportCSV() {
